@@ -28,9 +28,14 @@ def allocate_machine(wafer, machine, result):
 
 result = []
 
-input_filename = 'Milestone0.json'
+input_filename = 'Milestone4a.json'
 with open(rf"Input\{input_filename}") as file:
     data = json.load(file)
+
+steps = data['steps']
+steps_dict = defaultdict()
+for step in steps:
+    steps_dict[step['id']] = step
 
 machines = data['machines']
 m = []
@@ -41,7 +46,6 @@ print(m)
 for tm in m:
     print(tm)
 
-steps = data['steps']
 
 wafers = data['wafers']
 w = []
@@ -51,32 +55,40 @@ for wafer in wafers:
 print('WAFERS')
 print(w)
 for tw in w:
+    fill_dependencies(tw, steps_dict)
     print(tw)
 
-steps_dict = defaultdict()
+
 steps_wafer_queue = defaultdict(list)
 steps_machine_queue = defaultdict(list)
 
-for step in steps:
-    steps_dict[step['id']] = step
 print('STEPS')
 print(steps_dict)
 
-flag = True
+flag, dep_flag = True, False
 time = defaultdict(int)
 tt = 0
-while flag == True:
+while flag == True or dep_flag == True:
     flag = False
     for ind_w in range(len(w)):
         possible_machines = [i if i.step_id in w[ind_w].steps else None for i in m]
-        print(possible_machines)
         while None in possible_machines:
             possible_machines.remove(None)
         if len(possible_machines) == 0:
             continue
+        print("POS", possible_machines)
+
+        possible_machines, dep_flag=check_dependencies(w[ind_w], possible_machines, steps_dict)
+        if len(possible_machines) == 0:
+            continue
         possible_machines.sort()
         allocate_machine(w[ind_w], possible_machines[0], result)
-        flag = True
+
+        remove_dependency(w[ind_w], possible_machines[0].step_id)
+        for ttw in w:
+            print('alloc w: ', ttw)
+
+
 
 
 

@@ -58,6 +58,7 @@ for tw in w:
     fill_dependencies(tw, steps_dict)
     print(tw)
 
+
 steps_wafer_queue = defaultdict(list)
 steps_machine_queue = defaultdict(list)
 
@@ -75,14 +76,19 @@ while flag == True or dep_flag == True:
             possible_machines.remove(None)
         if len(possible_machines) == 0:
             continue
-        print(possible_machines[0])
-        possible_machines,dep_flag=check_dependencies(possible_machines, steps_dict)
+        print("POS", possible_machines)
+
+        possible_machines, dep_flag=check_dependencies(w[ind_w], possible_machines, steps_dict)
         if len(possible_machines) == 0:
             continue
         possible_machines.sort()
         allocate_machine(w[ind_w], possible_machines[0], result)
-        w[ind_w].remove()
-        flag = True
+
+        remove_dependency(w[ind_w], possible_machines[0].step_id)
+        for ttw in w:
+            print('alloc w: ', ttw)
+
+
 
 
 

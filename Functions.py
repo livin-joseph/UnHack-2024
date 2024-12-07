@@ -4,6 +4,7 @@ def parameters_check(machine_param, step_param):
             return False
     return True
 
+'''
 def allocate_machine(step, wafer, steps_machine_queue, steps, result):
     t = steps_machine_queue[step['id']]
     print(t)
@@ -22,7 +23,7 @@ def allocate_machine(step, wafer, steps_machine_queue, steps, result):
 
     result.append([wafer['type'], step, free_machine['machine_id'], free_machine['start_time'], free_machine['end_time']])
     print(result)
-
+'''
 
 
 def format_and_save(result, filename):
@@ -44,17 +45,27 @@ def fill_dependencies(wafer, steps_dict):
     for i in wafer.steps:
         if steps_dict[i]['dependency'] == None:
             continue
-        wafer.dependencies[i] = steps_dict[i].copy()
+        wafer.dependencies[i] = steps_dict[i]['dependency'].copy()
 
-def check_dependencies(machines, steps_dict):
-    temp = []
+def check_dependencies(wafer, possible_machines, steps_dict):
     flag = False
-    for i in machines:
-        if steps_dict[i.step_id]['dependency'] == None:
-            continue
-        print('DEPENDENCIES\n', steps_dict[i.step_id]['dependency'])
-        temp.append(i)
-        flag = True
-    for t in temp:
-        machines.remove(t)
-    return machines, flag
+    i = 0
+    while i < len(possible_machines):
+        step = possible_machines[i].step_id
+        if wafer.dependencies[step] == None or wafer.dependencies[step] == []:
+            pass
+        else:
+            flag = True
+            possible_machines.pop(i)
+            i -= 1
+        i += 1
+    print("POS", possible_machines)
+    return possible_machines, flag
+
+def remove_dependency(wafer, step):
+    for j in wafer.dependencies.keys():
+        if step in wafer.dependencies[j]:
+            print('rrr', step, wafer)
+            wafer.dependencies[j].remove(step)
+            print('rrr', step, wafer)
+

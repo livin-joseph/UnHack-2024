@@ -1,16 +1,16 @@
 from collections import defaultdict
 
 class Wafer():
-    def __init__(self, type, processing_times, id, quantity, dependencies=defaultdict()):
+    def __init__(self, type, processing_times, id, quantity):
         self.type = type
         self.steps = list(processing_times.keys())
         self.processing_times = processing_times
         self.id = id
         self.quantity = quantity
         self.time = 0
-        self.dependencies = dependencies
+        self.dependencies = defaultdict(list)
     def __str__(self):
-        return str([f"{self.type}-{self.id}", self.steps, self.processing_times])
+        return str([f"{self.type}-{self.id}", self.steps, self.processing_times, self.dependencies])
 
 class Machine():
     def __init__(self, id, step_id, cooldown_time, params, fluctuation, n):
