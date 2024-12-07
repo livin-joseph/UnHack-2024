@@ -4,27 +4,6 @@ def parameters_check(machine_param, step_param):
             return False
     return True
 
-'''
-def allocate_machine(step, wafer, steps_machine_queue, steps, result):
-    t = steps_machine_queue[step['id']]
-    print(t)
-    free_machine = None
-    for i in t:
-        print(wafer)
-        if parameters_check(i['initial_parameters'], step['parameters']):
-            free_machine = i
-
-    if 'start_time' not in free_machine:
-        free_machine['start_time'] = 0
-        free_machine['end_time'] = free_machine['start_time'] + wafer['processing_times'][step['id']]
-    else:
-        free_machine['start_time'] = free_machine['end_time']
-        free_machine['end_time'] = free_machine['start_time'] + wafer['processing_times'][step['id']]
-
-    result.append([wafer['type'], step, free_machine['machine_id'], free_machine['start_time'], free_machine['end_time']])
-    print(result)
-'''
-
 
 def format_and_save(result, filename):
     output = {'schedule': []}
