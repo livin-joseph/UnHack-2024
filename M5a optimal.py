@@ -117,7 +117,7 @@ time = defaultdict(int)
 tt = 0
 while flag == True or dep_flag == True:
     flag = False
-    for ind_w in range(len(w)):
+    for ind_w in range(len(w)-1, -1, -1):
         possible_machines = [i if i.step_id in w[ind_w].steps else None for i in m]
         while None in possible_machines:
             possible_machines.remove(None)
