@@ -66,9 +66,15 @@ def allocate_machine(wafer, machine, result):
 
     machine.curr_n -= 1
 
-    if machine.curr_n == 0:
-        machine.end_time += machine.cooldown_time
+    if machine.curr_n == 0 :
+        for i in machine.params:
+            machine.params[i] += machine.fluctuation[i]
         machine.curr_n = machine.n
+
+    import numpy as np
+    print(steps_dict)
+    if np.any([True if machine.params[i] <= steps_dict[machine.step_id]['parameters'][i][0] or machine.params[i] >= steps_dict[machine.step_id]['parameters'][i][1] else False for i in machine.params]):
+        machine.end_time += machine.cooldown_time
 
     wafer.steps.remove(machine.step_id)
     wafer.processing_times.pop(machine.step_id)
