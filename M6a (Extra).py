@@ -28,7 +28,7 @@ def allocate_machine(wafer, machine, result):
 
 result = []
 
-input_filename = 'Milestone6b.json'
+input_filename = 'Milestone6a.json'
 with open(rf"Input\Extra\{input_filename}") as file:
     data = json.load(file)
 
