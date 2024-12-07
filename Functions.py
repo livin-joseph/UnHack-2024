@@ -38,3 +38,23 @@ def format_and_save(result, filename):
     import json
     with open(filename, "w") as outfile: 
         json.dump(output, outfile)
+
+
+def fill_dependencies(wafer, steps_dict):
+    for i in wafer.steps:
+        if steps_dict[i]['dependency'] == None:
+            continue
+        wafer.dependencies[i] = steps_dict[i].copy()
+
+def check_dependencies(machines, steps_dict):
+    temp = []
+    flag = False
+    for i in machines:
+        if steps_dict[i.step_id]['dependency'] == None:
+            continue
+        print('DEPENDENCIES\n', steps_dict[i.step_id]['dependency'])
+        temp.append(i)
+        flag = True
+    for t in temp:
+        machines.remove(t)
+    return machines, flag

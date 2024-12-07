@@ -1,5 +1,7 @@
+from collections import defaultdict
+
 class Wafer():
-    def __init__(self, type, processing_times, id, quantity, dependencies=[]):
+    def __init__(self, type, processing_times, id, quantity, dependencies=defaultdict()):
         self.type = type
         self.steps = list(processing_times.keys())
         self.processing_times = processing_times
